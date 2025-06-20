@@ -1,0 +1,23 @@
+meta {
+  name: Create
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:3000/hoots
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJuYW1lIjoidGVzdCIsIl9pZCI6IjY4NTUwMTUzYzFjZjA4MTg2MDcwNmEwYiJ9LCJpYXQiOjE3NTA0MDI1NDd9.WskNhcBTyqsPy6vAGV5VbwKWTrM1RucmYqXsSJ_skq8
+}
+
+body:json {
+  {
+    "title": "Big News",
+    "category": "News",
+    "text": "hoot Text"
+  }
+}
