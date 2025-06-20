@@ -29,7 +29,7 @@ const hootSchema = new Schema(
       enum: ["News", "Sports", "Games", "Movies", "Music", "Television"],
     },
     author: { type: Schema.Types.ObjectId, ref: "User" },
-    comment: [commentSchema],
+    comments: [commentSchema],
   },
   { timestamps: true }
 );

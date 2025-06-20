@@ -1,21 +1,15 @@
 meta {
-  name: Update Hoot
+  name: Delete Comment
   type: http
-  seq: 7
+  seq: 11
 }
 
-put {
-  url: http://localhost:3000/hoots/685549073330bc22eb9c03a0
-  body: json
+delete {
+  url: http://localhost:3000/hoots/685549073330bc22eb9c03a0/comments/68554a023330bc22eb9c03a5
+  body: none
   auth: bearer
 }
 
 auth:bearer {
   token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJuYW1lIjoidGVzdCIsIl9pZCI6IjY4NTUwMTUzYzFjZjA4MTg2MDcwNmEwYiJ9LCJpYXQiOjE3NTA0MTk3MTIsImV4cCI6MTc1MDUwNjExMn0.CPaIs5-q9lTUV1_m_yiDDOp-QQz5UW9f7-P9wqz_NWU
-}
-
-body:json {
-  {
-    "text": "Updated Hoot Text"
-  }
 }
