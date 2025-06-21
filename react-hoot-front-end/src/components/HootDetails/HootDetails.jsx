@@ -1,5 +1,5 @@
-import { useParams } from "react-router";
 import { useState, useEffect, useContext } from "react";
+import { useParams, Link } from "react-router";
 import * as hootService from "./services/hootService";
 import CommentForm from "../CommentForm/CommentForm";
 import { UserContext } from "../../contexts/UserContext";
@@ -14,6 +14,14 @@ const HootDetails = ({ handleDeleteHoot }) => {
     // Updates state: keep original state of hoot, copies the existing comments and adds the newComment at the end
     setHoot({ ...hoot, comments: [...hoot.comments, newComment] });
   };
+
+  const handleDeleteComment = async (commentId) => {
+    await hootService.deleteComment(hootId, commentId)
+    setHoot({
+      ...hoot,
+      comments: hoot.comments.filter((comment) => comment._id !== commentId),
+    });
+  }
 
   // Fetch respective data from database whenever hootId changes
   useEffect(() => {
@@ -40,6 +48,7 @@ const HootDetails = ({ handleDeleteHoot }) => {
           {/* Only show the delete button if the hoot author is the same as the logged in user */}
           {hoot.author._id === user._id && (
             <>
+              <Link to={`hoots/${hootId}/edit`}>Edit</Link>
               <button onClick={() => handleDeleteHoot(hootId)}>Delete</button>
             </>
           )}
@@ -63,6 +72,8 @@ const HootDetails = ({ handleDeleteHoot }) => {
               </p>
             </header>
             <p>{comment.text}</p>
+            {hoot.author._id === user._id && (<Link to={`/hoots/${hootId}/comments/${comment._id}/edit`}>Edit Comment</Link>)}
+            {hoot.author._id === user._id && (<button onClick={() => handleDeleteComment(comment._id)}>Delete Comment</button>)}
           </article>
         ))}
       </section>

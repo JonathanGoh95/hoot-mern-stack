@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router";
+import * as hootService from "../../services/hootService";
 
-const HootForm = ({ handleAddHoot }) => {
+const HootForm = ({ handleAddHoot, handleUpdateHoot }) => {
+  const { hootId } = useParams();
   const [formData, setFormData] = useState({
     title: "",
     text: "",
@@ -13,11 +16,26 @@ const HootForm = ({ handleAddHoot }) => {
   // Consistent syntax for most form submission
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    handleAddHoot(formData);
+    if (hootId){
+      handleUpdateHoot(hootId,formData);
+    } else{
+      handleAddHoot(formData);
+    }
   };
+  // For displaying the values of the current hoot in the edit form
+  useEffect(() => {
+    const fetchHoot = async () => {
+      const hootData = await hootService.show(hootId);
+      setFormData(hootData);
+    };
+    if (hootId) fetchHoot;
+    // Cleanup Function (Runs when a component is removed from the DOM or when the hootId changes)
+    return () => setFormData({ title: '', text: '', category: 'News' });
+  },[hootId]);
 
   return (
     <main>
+      <h1>{hootId ? "Edit Hoot" : "New Hoot"}</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="title-input">Title</label>
         <input

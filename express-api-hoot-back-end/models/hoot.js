@@ -10,7 +10,7 @@ const commentSchema = new Schema(
     },
     author: { type: Schema.Types.ObjectId, ref: "User" },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const hootSchema = new Schema(
@@ -31,7 +31,7 @@ const hootSchema = new Schema(
     author: { type: Schema.Types.ObjectId, ref: "User" },
     comments: [commentSchema],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Hoot = model("Hoot", hootSchema);

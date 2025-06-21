@@ -124,8 +124,13 @@ router.put("/:hootId/comments/:commentId", verifyToken, async (req, res) => {
 router.delete("/:hootId/comments/:commentId", verifyToken, async (req, res) => {
   try {
     const hoot = await Hoot.findById(req.params.hootId);
+    if (!hoot) {
+      return res.status(404).json({ message: "Hoot not found" });
+    }
     const comment = hoot.comments.id(req.params.commentId);
-
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
     // Ensures the current user is the author of the comment
     if (comment.author.toString() !== req.user._id) {
       return res

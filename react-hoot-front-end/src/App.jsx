@@ -9,6 +9,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import HootList from "./components/HootList/HootList";
 import HootDetails from "./components/HootDetails/HootDetails";
 import HootForm from "./components/HootForm/HootForm";
+import CommentForm from "./components/CommentForm/CommentForm";
 import * as hootService from "./services/hootService";
 
 import { UserContext } from "./contexts/UserContext";
@@ -35,9 +36,16 @@ const App = () => {
     navigate("/hoots");
   };
 
+  const handleUpdateHoot = async (hootId, hootFormData) => {
+    const updatedHoot = await hootService.update(hootId,hootFormData)
+    // Only replace the hoot if the hoot ID matches the one in the database
+    setHoots(hoots.map((hoot)=>(hootId === hoot._id ? updatedHoot : hoot)))
+    navigate(`/hoots/${hootId}`)
+  }
+  
   const handleDeleteHoot = async (hootId) => {
     console.log("hootId", hootId);
-    const deletedHoot = await hootService.deleteHoot(hootId)
+    const deletedHoot = await hootService.deleteHoot(hootId);
     setHoots(hoots.filter((hoot) => hoot._id !== deletedHoot._id));
     navigate("/hoots");
   };
@@ -59,6 +67,8 @@ const App = () => {
               path="/hoots/new"
               element={<HootForm handleAddHoot={handleAddHoot} />}
             />
+            <Route path="/hoots/:hootId/edit" element={<HootForm handleUpdateHoot={handleUpdateHoot}/>} />
+            <Route path="/hoots/:hootId/comments/:commentId/edit" element={<CommentForm />} />
           </>
         ) : (
           <>
