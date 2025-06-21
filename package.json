@@ -16,5 +16,8 @@
     "url": "https://github.com/JonathanGoh95/hoot-mern-stack/issues"
   },
   "homepage": "https://github.com/JonathanGoh95/hoot-mern-stack#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "prettier": "3.5.3"
+  }
 }

@@ -46,7 +46,7 @@ router.put("/:hootId", verifyToken, async (req, res) => {
     const hoot = await Hoot.findById(req.params.hootId);
 
     // Check for permissions (Note the syntax)
-    if (!hoot.author.equals(req.user._id)) {
+    if (!hoot.author._id.equals(req.user._id)) {
       res.status(403).send("Unauthorized User");
     }
 
@@ -70,7 +70,7 @@ router.delete("/:hootId", verifyToken, async (req, res) => {
     const hoot = await Hoot.findById(req.params.hootId);
 
     // Check for permissions (Note the syntax)
-    if (!hoot.author.equals(req.user._id)) {
+    if (!hoot.author._id.equals(req.user._id)) {
       res.status(403).send("Unauthorized User");
     }
 

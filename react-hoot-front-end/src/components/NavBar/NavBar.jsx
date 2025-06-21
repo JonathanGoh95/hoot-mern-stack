@@ -15,9 +15,14 @@ const NavBar = () => {
     <nav>
       {user ? (
         <ul>
-          <li>Welcome, {user.username}</li>
           <li>
-            <Link to="/">Dashboard</Link>
+            <Link to="/">HOME</Link>
+          </li>
+          <li>
+            <Link to="/hoots">HOOTS</Link>
+          </li>
+          <li>
+            <Link to="/hoots/new">NEW HOOT</Link>
           </li>
           <li>
             <Link to="/" onClick={handleSignOut}>
@@ -28,13 +33,13 @@ const NavBar = () => {
       ) : (
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">HOME</Link>
           </li>
           <li>
-            <Link to="/sign-in">Sign In</Link>
+            <Link to="/sign-in">SIGN IN</Link>
           </li>
           <li>
-            <Link to="/sign-up">Sign Up</Link>
+            <Link to="/sign-up">SIGN UP</Link>
           </li>
         </ul>
       )}
