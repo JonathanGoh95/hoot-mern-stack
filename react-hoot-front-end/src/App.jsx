@@ -5,7 +5,7 @@ import NavBar from "./components/NavBar/NavBar";
 import SignUpForm from "./components/SignUpForm/SignUpForm";
 import SignInForm from "./components/SignInForm/SignInForm";
 import Landing from "./components/Landing/Landing";
-import Dashboard from "./components/Dashboard/Dashboard";
+// import Dashboard from "./components/Dashboard/Dashboard";
 import HootList from "./components/HootList/HootList";
 import HootDetails from "./components/HootDetails/HootDetails";
 import HootForm from "./components/HootForm/HootForm";
@@ -37,12 +37,12 @@ const App = () => {
   };
 
   const handleUpdateHoot = async (hootId, hootFormData) => {
-    const updatedHoot = await hootService.update(hootId,hootFormData)
+    const updatedHoot = await hootService.update(hootId, hootFormData);
     // Only replace the hoot if the hoot ID matches the one in the database
-    setHoots(hoots.map((hoot)=>(hootId === hoot._id ? updatedHoot : hoot)))
-    navigate(`/hoots/${hootId}`)
-  }
-  
+    setHoots(hoots.map((hoot) => (hootId === hoot._id ? updatedHoot : hoot)));
+    navigate(`/hoots/${hootId}`);
+  };
+
   const handleDeleteHoot = async (hootId) => {
     console.log("hootId", hootId);
     const deletedHoot = await hootService.deleteHoot(hootId);
@@ -54,7 +54,7 @@ const App = () => {
     <>
       <NavBar />
       <Routes>
-        <Route path="/" element={user ? <Dashboard /> : <Landing />} />
+        <Route path="/" element={<Landing />} />
         {user ? (
           <>
             {/* Protected routes (available only to signed-in users) */}
@@ -67,8 +67,14 @@ const App = () => {
               path="/hoots/new"
               element={<HootForm handleAddHoot={handleAddHoot} />}
             />
-            <Route path="/hoots/:hootId/edit" element={<HootForm handleUpdateHoot={handleUpdateHoot}/>} />
-            <Route path="/hoots/:hootId/comments/:commentId/edit" element={<CommentForm />} />
+            <Route
+              path="/hoots/:hootId/edit"
+              element={<HootForm handleUpdateHoot={handleUpdateHoot} />}
+            />
+            <Route
+              path="/hoots/:hootId/comments/:commentId/edit"
+              element={<CommentForm />}
+            />
           </>
         ) : (
           <>

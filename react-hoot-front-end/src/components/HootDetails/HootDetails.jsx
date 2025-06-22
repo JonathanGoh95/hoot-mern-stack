@@ -3,6 +3,10 @@ import { useParams, Link } from "react-router";
 import * as hootService from "./services/hootService";
 import CommentForm from "../CommentForm/CommentForm";
 import { UserContext } from "../../contexts/UserContext";
+import styles from "./HootDetails.module.css";
+import Loading from "../Loading/Loading";
+import Icon from "../Icon/Icon";
+import AuthorInfo from "../AuthorInfo/AuthorInfo";
 
 const HootDetails = ({ handleDeleteHoot }) => {
   const { hootId } = useParams();
@@ -16,12 +20,12 @@ const HootDetails = ({ handleDeleteHoot }) => {
   };
 
   const handleDeleteComment = async (commentId) => {
-    await hootService.deleteComment(hootId, commentId)
+    await hootService.deleteComment(hootId, commentId);
     setHoot({
       ...hoot,
       comments: hoot.comments.filter((comment) => comment._id !== commentId),
     });
-  }
+  };
 
   // Fetch respective data from database whenever hootId changes
   useEffect(() => {
@@ -33,25 +37,28 @@ const HootDetails = ({ handleDeleteHoot }) => {
   }, [hootId]);
   console.log("hoot state:", hoot);
 
-  if (!hoot) return <main>Loading...</main>;
+  if (!hoot) return <Loading />;
 
   return (
-    <main>
+    <main className={styles.container}>
       <section>
         <header>
           <p>{hoot.category.toUpperCase()}</p>
           <h1>{hoot.title}</h1>
-          <p>
-            {`${hoot.author.username} posted on
-            ${new Date(hoot.createdAt).toLocaleDateString()}`}
-          </p>
-          {/* Only show the delete button if the hoot author is the same as the logged in user */}
-          {hoot.author._id === user._id && (
-            <>
-              <Link to={`hoots/${hootId}/edit`}>Edit</Link>
-              <button onClick={() => handleDeleteHoot(hootId)}>Delete</button>
-            </>
-          )}
+          <div>
+            <AuthorInfo content={hoot} />
+            {/* Only show the delete button if the hoot author is the same as the logged in user */}
+            {hoot.author._id === user._id && (
+              <>
+                <Link to={`hoots/${hootId}/edit`}>
+                  <Icon category="Edit" />
+                </Link>
+                <button onClick={() => handleDeleteHoot(hootId)}>
+                  <Icon category="Trash" />
+                </button>
+              </>
+            )}
+          </div>
         </header>
         <p>{hoot.text}</p>
       </section>
@@ -66,14 +73,21 @@ const HootDetails = ({ handleDeleteHoot }) => {
         {hoot.comments.map((comment) => (
           <article key={comment._id}>
             <header>
-              <p>
-                {`${comment.author.username} posted on
-                ${new Date(comment.createdAt).toLocaleDateString()}`}
-              </p>
+              <div>
+                <AuthorInfo content={comment} />
+                {comment.author._id === user._id && (
+                  <>
+                    <Link to={`/hoots/${hootId}/comments/${comment._id}/edit`}>
+                      <Icon category="Edit" />
+                    </Link>
+                    <button onClick={() => handleDeleteComment(comment._id)}>
+                      <Icon category="Trash" />
+                    </button>
+                  </>
+                )}
+              </div>
             </header>
             <p>{comment.text}</p>
-            {hoot.author._id === user._id && (<Link to={`/hoots/${hootId}/comments/${comment._id}/edit`}>Edit Comment</Link>)}
-            {hoot.author._id === user._id && (<button onClick={() => handleDeleteComment(comment._id)}>Delete Comment</button>)}
           </article>
         ))}
       </section>

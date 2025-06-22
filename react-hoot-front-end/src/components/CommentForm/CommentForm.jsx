@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
-import * as hootService from "../../services/hootService"
+import styles from "./CommentForm.module.css";
+import Icon from "../Icon/Icon";
+import * as hootService from "../../services/hootService";
 
 const CommentForm = ({ handleAddComment }) => {
-  const navigate = useNavigate()
-  const {hootId, commentId} = useParams()
+  const navigate = useNavigate();
+  const { hootId, commentId } = useParams();
   const [formData, setFormData] = useState({ text: "" });
 
   const handleChange = (evt) => {
@@ -13,25 +15,48 @@ const CommentForm = ({ handleAddComment }) => {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    if (hootId && commentId){
-      await hootService.updateComment(hootId, commentId, formData)
-      navigate(`hoots/${hootId}`)
-    }else{
+    if (hootId && commentId) {
+      await hootService.updateComment(hootId, commentId, formData);
+      navigate(`hoots/${hootId}`);
+    } else {
       handleAddComment(formData);
     }
     // Clears Form Data upon form submission
     setFormData({ text: "" });
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchHoot = async () => {
-      const hootData = await hootService.show(hootId)
+      const hootData = await hootService.show(hootId);
       // Find comment in fetched hoot data
-      setFormData(hootData.comment.find((comment) => comment._id === commentId))
-    }
+      setFormData(
+        hootData.comment.find((comment) => comment._id === commentId),
+      );
+    };
     // Only run the function when hootId and commentId are present
-    if (hootId && commentId) fetchHoot()
-  },[hootId, commentId])
+    if (hootId && commentId) fetchHoot();
+  }, [hootId, commentId]);
+
+  if (hootId && commentId)
+    return (
+      <main className={styles.container}>
+        <form onSubmit={handleSubmit}>
+          <h1>Edit Comment</h1>
+          <label htmlFor="text-input">Your comment:</label>
+          <textarea
+            required
+            type="text"
+            name="text"
+            id="text-input"
+            value={formData.text}
+            onChange={handleChange}
+          />
+          <button type="submit">
+            <Icon category="Create" />
+          </button>
+        </form>
+      </main>
+    );
 
   return (
     <form onSubmit={handleSubmit}>
