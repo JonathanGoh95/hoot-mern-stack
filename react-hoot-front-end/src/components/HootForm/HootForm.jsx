@@ -29,7 +29,7 @@ const HootForm = ({ handleAddHoot, handleUpdateHoot }) => {
       const hootData = await hootService.show(hootId);
       setFormData(hootData);
     };
-    if (hootId) fetchHoot;
+    if (hootId) fetchHoot();
     // Cleanup Function (Runs when a component is removed from the DOM or when the hootId changes)
     return () => setFormData({ title: "", text: "", category: "News" });
   }, [hootId]);

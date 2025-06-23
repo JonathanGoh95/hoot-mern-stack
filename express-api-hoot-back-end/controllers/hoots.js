@@ -4,7 +4,16 @@ const Hoot = require("../models/hoot.js");
 const router = express.Router();
 
 // Create Hoot
-router.post("/", verifyToken, async (req, res) => {
+router.post("/new", verifyToken, async (req, res) => {
+  if (req.body.title.trim() === "")
+    return res.status(400).json({ err: "Title field cannot be blank" });
+  if (req.body.title.length < 3)
+    return res
+      .status(400)
+      .json({ err: "Title cannot have less than 3 characters" });
+  if (req.body.text.trim() === "")
+    return res.status(400).json({ err: "Text field cannot be blank" });
+  req.body.category = req.body.category.trim();
   try {
     req.body.author = req.user._id; // Ensures that the logged-in user is recorded as the author of the hoot
     const hoot = await Hoot.create(req.body); // Create the new hoot document in the database
@@ -19,8 +28,8 @@ router.post("/", verifyToken, async (req, res) => {
 router.get("/", verifyToken, async (req, res) => {
   try {
     const hoots = await Hoot.find({})
-      .populate("author")
-      .sort({ createdAt: "desc" });
+      .populate("author") // Show all key-value pairs of the author object
+      .sort({ createdAt: "desc" }); // Latest hoots will be shown first
     res.status(200).json(hoots);
   } catch (err) {
     res.status(500).json({ err: err.message });

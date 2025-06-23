@@ -30,7 +30,7 @@ const HootDetails = ({ handleDeleteHoot }) => {
   // Fetch respective data from database whenever hootId changes
   useEffect(() => {
     const fetchHoot = async () => {
-      const hootData = await hootService.show();
+      const hootData = await hootService.show(hootId);
       setHoot(hootData);
     };
     fetchHoot();
@@ -50,7 +50,7 @@ const HootDetails = ({ handleDeleteHoot }) => {
             {/* Only show the delete button if the hoot author is the same as the logged in user */}
             {hoot.author._id === user._id && (
               <>
-                <Link to={`hoots/${hootId}/edit`}>
+                <Link to={`/hoots/${hootId}/edit`}>
                   <Icon category="Edit" />
                 </Link>
                 <button onClick={() => handleDeleteHoot(hootId)}>

@@ -33,13 +33,13 @@ const App = () => {
   const handleAddHoot = async (hootFormData) => {
     const newHoot = await hootService.create(hootFormData);
     setHoots([newHoot, ...hoots]);
-    navigate("/hoots");
+    navigate("/hoots/");
   };
 
   const handleUpdateHoot = async (hootId, hootFormData) => {
     const updatedHoot = await hootService.update(hootId, hootFormData);
     // Only replace the hoot if the hoot ID matches the one in the database
-    setHoots(hoots.map((hoot) => (hootId === hoot._id ? updatedHoot : hoot)));
+    setHoots((prevHoots) => prevHoots.map((hoot) => (hootId === hoot._id ? updatedHoot : hoot)));
     navigate(`/hoots/${hootId}`);
   };
 
@@ -47,7 +47,7 @@ const App = () => {
     console.log("hootId", hootId);
     const deletedHoot = await hootService.deleteHoot(hootId);
     setHoots(hoots.filter((hoot) => hoot._id !== deletedHoot._id));
-    navigate("/hoots");
+    navigate("/hoots/");
   };
 
   return (
@@ -58,7 +58,7 @@ const App = () => {
         {user ? (
           <>
             {/* Protected routes (available only to signed-in users) */}
-            <Route path="/hoots" element={<HootList hoots={hoots} />} />
+            <Route path="/hoots/" element={<HootList hoots={hoots} />} />
             <Route
               path="/hoots/:hootId"
               element={<HootDetails handleDeleteHoot={handleDeleteHoot} />}

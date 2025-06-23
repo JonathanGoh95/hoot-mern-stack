@@ -19,14 +19,18 @@ const hootSchema = new Schema(
     title: {
       type: String,
       required: true,
+      trim: true,
+      minLength: 3,
     },
     text: {
       type: String,
       required: true,
+      trim: true,
     },
     category: {
       type: String,
       required: true,
+      trim: true,
       enum: CATEGORIES,
     },
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },

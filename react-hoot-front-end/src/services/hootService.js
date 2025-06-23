@@ -15,7 +15,6 @@ const index = async () => {
 const show = async (hootId) => {
   try {
     const res = await fetch(`${BASE_URL}/${hootId}`, {
-      method: "POST",
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     if (!res.ok) throw new Error("Failed to show Hoot");
@@ -28,6 +27,7 @@ const show = async (hootId) => {
 const create = async (hootFormData) => {
   try {
     const res = await fetch(`${BASE_URL}/new`, {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "application/json",
