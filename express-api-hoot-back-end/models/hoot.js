@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const { Schema, model } = mongoose;
+const CATEGORIES = ["News", "Sports", "Games", "Movies", "Music", "Television"];
 
 const commentSchema = new Schema(
   {
@@ -10,7 +11,7 @@ const commentSchema = new Schema(
     },
     author: { type: Schema.Types.ObjectId, ref: "User" },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 const hootSchema = new Schema(
@@ -26,12 +27,12 @@ const hootSchema = new Schema(
     category: {
       type: String,
       required: true,
-      enum: ["News", "Sports", "Games", "Movies", "Music", "Television"],
+      enum: CATEGORIES,
     },
-    author: { type: Schema.Types.ObjectId, ref: "User" },
+    author: { type: Schema.Types.ObjectId, ref: "User", required: true },
     comments: [commentSchema],
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 const Hoot = model("Hoot", hootSchema);

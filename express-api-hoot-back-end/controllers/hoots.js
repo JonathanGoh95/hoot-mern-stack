@@ -8,7 +8,7 @@ router.post("/", verifyToken, async (req, res) => {
   try {
     req.body.author = req.user._id; // Ensures that the logged-in user is recorded as the author of the hoot
     const hoot = await Hoot.create(req.body); // Create the new hoot document in the database
-    hoot._doc.author = req.user;
+    hoot._doc.author = req.user; // _doc property is from MongoDB, which will be needed to work with the actual data
     res.status(201).json(hoot);
   } catch (err) {
     res.status(500).json({ err: err.message });
